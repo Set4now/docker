@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+ my_custom_nginx:
+   image: custom_nginx
+   volumes: 
+     - .:/usr/share/nginx/html
+   ports:
+     - '8080:80' 

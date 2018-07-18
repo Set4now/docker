@@ -1,0 +1,49 @@
+version: "3.1"
+
+services:
+  
+  proxy:
+    image: sumandevops/sample-haproxy
+    deploy:
+#       restart_policy: 
+#         condition: on-failure
+       placement:
+         constraints: [node.role == manager]
+    ports:
+      - "8080:8080"
+    volumes:
+      - "haproxy_config:/usr/local/etc/haproxy"
+    networks:
+        - my_proxy
+    depends_on:
+        - nginx1
+        - nginx2
+
+
+  nginx1:
+    image: sumandevops/nginx1
+    deploy:
+      restart_policy: 
+        condition: on-failure
+    ports:
+        - "80"
+    networks:
+        - my_proxy
+
+
+  nginx2:
+    image: sumandevops/nginx2
+    deploy:
+      restart_policy: 
+        condition: on-failure
+    ports:
+        - "80"
+    networks:
+        - my_proxy
+
+
+networks:
+   my_proxy:
+
+volumes:
+  haproxy_config:
